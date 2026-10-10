@@ -1,0 +1,23 @@
+# Large local AI models — never commit
+*.gguf
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs and temp files
+*.log
+*.tmp
+
+# Python (local helper scripts)
+__pycache__/
+*.pyc
+
+# Node (if ever added)
+node_modules/

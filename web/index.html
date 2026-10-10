@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pratik Maharjan — Flutter Developer</title>
+<meta name="description" content="Portfolio of Pratik Maharjan: Flutter developer building Android and iOS apps, with Spring Boot, C and WebAssembly projects.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<canvas id="fx" aria-hidden="true"></canvas>
+<div class="spot" aria-hidden="true"></div>
+<div class="mermaid-layer" id="mermaidLayer" aria-hidden="true">
+  <div class="mermaid-body" id="mermaidBody">
+    <img class="mermaid-pose" src="secondary_asset/mermaid-1.png" alt="" width="236" height="447">
+    <img class="mermaid-pose" src="secondary_asset/mermaid-2.png" alt="" width="353" height="330">
+    <img class="mermaid-pose" src="secondary_asset/mermaid-3.png" alt="" width="254" height="452">
+    <img class="mermaid-pose" src="secondary_asset/mermaid-4.png" alt="" width="207" height="517">
+    <img class="mermaid-pose" src="secondary_asset/mermaid-5.png" alt="" width="236" height="464">
+  </div>
+</div>
+
+<header class="nav">
+  <a class="brand" href="#top">Pratik Maharjan</a>
+  <nav aria-label="Primary">
+    <a href="#projects">Projects</a><a href="#experience">Experience</a><a href="#skills">Skills</a><a href="#contact">Contact</a>
+    <button id="theme" class="icon" aria-label="Toggle light and dark theme">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </nav>
+</header>
+
+<main id="top">
+  <section class="hero" data-say="Hi, I'm Pip! This is Pratik's portfolio. Scroll down and I'll show you around." data-mood="1">
+    <div class="hero-text">
+      <p class="lede" data-type>Hi, I'm Pratik Maharjan.</p>
+      <h1 data-type>I build mobile apps that businesses rely on every day.</h1>
+      <p class="sub" data-type>Flutter developer in Lalitpur, Nepal. I ship Android and iOS apps, and I'm growing into backend work with Spring Boot, media pipelines and C through FFI. The motion on this page runs in a C engine compiled to WebAssembly.</p>
+      <div class="cta">
+        <a class="btn primary" href="#projects">See my projects</a>
+        <a class="btn" href="mailto:pratikmaharjan323@gmail.com">Email me</a>
+      </div>
+      <p class="status" id="status">Loading engine…</p>
+    </div>
+    <div class="hero-side">
+      <div class="socials" aria-label="Social media">
+        <a href="https://github.com/AMNTDEVIL" rel="noopener">GitHub</a><a href="https://gitlab.com/amntdevil-group" rel="noopener">GitLab</a><a href="https://www.linkedin.com/in/pratikmaharjan323/" rel="noopener">LinkedIn</a><a href="https://www.facebook.com/pratik.maharjan.146/" rel="noopener">Facebook</a>
+      </div>
+      <div class="hero-portrait">
+        <img src="profile_picture.jpg" alt="Portrait of Pratik Maharjan" width="340" height="340">
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" data-say="This is the projects section. Here is what Pratik has built." data-mood="1">
+    <h2>Projects</h2>
+    <div class="grid">
+      <article class="card" data-fx data-say="Project 1: StackFood. A food delivery app with live Google Maps tracking." data-mood="2">
+        <h3>StackFood mobile app</h3>
+        <p>Food delivery app with user login, Google Maps tracking, restaurant opening hours, and a chat that replies with automated responses. Supports restaurant sign-up and rider applications.</p>
+        <p class="tags">Flutter, Firebase, Google Maps</p>
+        <a class="link" href="https://github.com/AMNTDEVIL/Stackfood2" rel="noopener">View on GitHub</a>
+      </article>
+      <article class="card" data-fx data-say="Project 2: Video Stream App. Upload, transcode and stream video, all built from scratch." data-mood="2">
+        <h3>Video streaming platform</h3>
+        <p>Full-stack platform with secure uploads and adaptive HLS playback. A RabbitMQ pipeline transcodes each video to 360p, 480p and 720p and makes thumbnails. Files sit in private Backblaze B2 storage behind signed URLs. Includes an experimental hardware-locked admin login written in C and called through FFI.</p>
+        <p class="tags">Flutter, Spring Boot, RabbitMQ, FFmpeg, PostgreSQL, Docker, Cloudflare</p>
+        <a class="link" href="https://gitlab.com/amntdevil-group/VideoStreamingApp/" rel="noopener">View on GitLab</a>
+      </article>
+      <article class="card" data-fx data-say="Project 3: the BYD dealer ERP. More than 100 people use it every day!" data-mood="2">
+        <h3>ERP for BYD</h3>
+        <p>Cross-platform ERP app for BYD dealers across Nepal, including CIMEX, EcoDrive and Plugin Motors. Used daily by 100+ employees for sales, service and operations. I handle features, API integration, Android and iOS releases, and production support, with care for sensitive customer data.</p>
+        <p class="tags">Flutter, REST APIs, Android, iOS</p>
+      </article>
+      <article class="card" data-fx data-say="Project 4: ERP for seeCar. Software the business runs on every day." data-mood="2">
+        <h3>ERP for seeCar</h3>
+        <p>Cross-platform ERP for seeCar(Recondition), used by the business to run its daily operations: sales, inventory, service records and reporting in one place. Built for staff who need it to work reliably on both Android and iOS.</p>
+        <p class="tags">Flutter, REST APIs, Android, iOS</p>
+      </article>
+      <article class="card" data-fx data-say="Project 5: ERP for Tapai Ko Bazar, powering the store's day-to-day business." data-mood="2">
+        <h3>ERP for Tapai Ko Bazar</h3>
+        <p>ERP for Tapai Ko Bazar that the store uses to perform its business: stock and inventory, orders and reports, kept in sync so the team can serve customers without juggling spreadsheets.</p>
+        <p class="tags">Flutter, REST APIs, Android, iOS</p>
+      </article>
+      <article class="card" data-fx data-say="Project 6: an e-commerce app for Baltra." data-mood="2">
+        <h3>E-commerce for Baltra</h3>
+        <p>E-commerce app for Baltra that the business uses to sell online: product catalog, cart and checkout, order tracking and admin management, shipped to both the App Store and Google Play.</p>
+        <p class="tags">Flutter, REST APIs, Android, iOS</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="experience" data-say="Experience time! Pratik has worked on real client projects." data-mood="3">
+    <h2>Experience</h2>
+    <ol class="timeline">
+      <li data-say="Right now he is a Junior Flutter Developer at Codesc Nepal." data-mood="2">
+        <h3>Junior Flutter Developer, Codesc Nepal Pvt Ltd</h3>
+        <p class="when">Nov 2025 to present · Kathmandu</p>
+        <p>Lead developer of the BYD ERP app across Nepal, working directly with clients from first conversation to release. Day-to-day responsibilities:</p>
+        <ul class="plain resp">
+          <li>Requirement analysis and gathering</li>
+          <li>Tech support for live users</li>
+          <li>On-site client visits</li>
+          <li>Client meetings and collaboration</li>
+          <li>Deployment on iOS and Android</li>
+          <li>App Store Connect and Google Play Console management</li>
+          <li>User and access control in App Store and Play Store apps</li>
+        </ul>
+      </li>
+      <li data-say="Before that, he interned at Bluefox and worked on StackFood." data-mood="2">
+        <h3>Flutter Intern, Bluefox</h3>
+        <p class="when">Dec 2024 to Apr 2025 · Remote, Itahari</p>
+        <p>Built features on the StackFood app across frontend and backend, using Firebase as the database, with guidance from my mentor.</p>
+      </li>
+    </ol>
+    <h3 class="sub-h" data-say="He studied computer applications, and kept learning with workshops." data-mood="3">Education and training</h3>
+    <ul class="plain">
+      <li><strong>Bachelor in Computer Application</strong>, Neseld International College, 2020 to 2025</li>
+      <li><strong>+2 Management</strong>, DAV College for Management, 2018 to 2020</li>
+      <li><strong>Software QA and Testing</strong>, Waveplus IT Solutions, 30-hour Jest workshop, 2025</li>
+      <li><strong>Agile Methodology</strong>, Pinakin Technologies and Research Center, 6-hour Scrum workshop, 2025</li>
+    </ul>
+  </section>
+
+  <section id="skills" data-say="These are Pratik's tech skills, and his main skill is mobile app development with Flutter." data-mood="3">
+    <h2>Tech skills</h2>
+    <div class="main-skill">
+      <span class="ms-tag">Main skill</span>
+      <span class="ms-text"><strong>Mobile App Development</strong> — Clean Flutter apps for Android and iOS.</span>
+    </div>
+    <div class="skillgrid">
+      <div class="skill-card"><h3>Mobile</h3><ul class="chips"><li data-fx>Flutter</li><li data-fx>Dart</li><li data-fx>Android</li><li data-fx>iOS</li></ul></div>
+      <div class="skill-card"><h3>Backend</h3><ul class="chips"><li data-fx>Spring Boot</li><li data-fx>REST APIs</li><li data-fx>RabbitMQ</li><li data-fx>FFmpeg</li><li data-fx>Backblaze B2</li></ul></div>
+      <div class="skill-card"><h3>Data</h3><ul class="chips"><li data-fx>MySQL</li><li data-fx>PostgreSQL</li><li data-fx>Firebase</li></ul></div>
+      <div class="skill-card"><h3>Languages and tools</h3><ul class="chips"><li data-fx>C</li><li data-fx>JavaScript</li><li data-fx>PHP</li><li data-fx>HTML</li><li data-fx>Git and GitHub</li><li data-fx>Docker</li></ul></div>
+    </div>
+  </section>
+
+  <section id="other-skills" data-say="Besides code, Pratik works directly with clients — communication, requirements, meetings, support and app store management." data-mood="3">
+    <h2>Other skills</h2>
+    <p class="sub">The client-facing work that gets real products shipped:</p>
+    <div class="skillgrid">
+      <div class="skill-card"><h3>Client work</h3><ul class="chips"><li data-fx>Client communication</li><li data-fx>Requirement analysis and gathering</li><li data-fx>Client meetings and collaboration</li><li data-fx>On-site client visits</li><li data-fx>Tech support</li></ul></div>
+      <div class="skill-card"><h3>Releases and stores</h3><ul class="chips"><li data-fx>Deployment on iOS and Android</li><li data-fx>App Store Connect management</li><li data-fx>Google Play Console management</li><li data-fx>User and access control</li></ul></div>
+      <div class="skill-card"><h3>Process and quality</h3><ul class="chips"><li data-fx>Agile and Scrum</li><li data-fx>Software QA and testing</li></ul></div>
+      <div class="skill-card"><h3>Spoken languages</h3><ul class="chips"><li data-fx class="chip-strong">Nepali</li><li data-fx class="chip-strong">English</li><li data-fx class="chip-strong">Hindi</li><li data-fx class="chip-strong">Newari</li></ul></div>
+    </div>
+  </section>
+
+  <section id="contact" data-say="Like what you see? Fill the form and it opens your mail app, ready to send!" data-mood="1">
+    <h2>Contact</h2>
+    <p class="sub">Open to Flutter and full-stack roles. Fill this in and Submit — it opens your mail app with everything pre-filled, addressed to pratikmaharjan323@gmail.com.</p>
+    <form class="mailform" id="mailForm">
+      <label>Name<input id="mName" type="text" name="name" required autocomplete="name" placeholder="Your name"></label>
+      <label>Email Address<input id="mEmail" type="email" name="email" required autocomplete="email" placeholder="you@example.com"></label>
+      <label>Subject<input id="mSubject" type="text" name="subject" required placeholder="What is this about?"></label>
+      <button class="btn primary" type="submit">Submit</button>
+    </form>
+  </section>
+</main>
+
+<button class="guide" id="bird" aria-label="Pip the parrot, your guide. Click to hear the last tip again">
+  <span class="bubble" id="bubble" aria-hidden="true"></span>
+  <span class="bird" id="sprite" role="img" aria-hidden="true"></span>
+</button>
+
+<button class="chat-fab" id="chatOpen" aria-label="Open chatbot" aria-expanded="false">
+  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-4-.9L3 21l1.9-5.5a8.5 8.5 0 1 1 16.1-4z"/></svg>
+</button>
+
+<aside class="chat" id="chat" hidden aria-label="Chatbot">
+  <header class="chat-head">
+    <span class="chat-title">Chat with Pip</span>
+    <button class="chat-close" id="chatClose" aria-label="Close chatbot">×</button>
+  </header>
+  <div class="chat-log" id="chatLog" aria-live="polite"></div>
+  <form class="chat-form" id="chatForm">
+    <input id="chatInput" type="text" placeholder="Type a message…" autocomplete="off" aria-label="Message">
+    <button type="submit" class="chat-send">Send</button>
+  </form>
+</aside>
+
+<footer>
+  <span>© <span id="yr"></span> Pratik Maharjan</span>
+  <span class="foot-note">Crafted in Lalitpur, Nepal · C engine compiled to WebAssembly</span>
+  <span id="clock">…</span>
+</footer>
+
+<script src="portfolio.js"></script>
+<script src="mermaid.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
