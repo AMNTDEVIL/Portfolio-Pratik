@@ -203,13 +203,50 @@ try {
   }
 } catch (_) {}
 
-/* ---------- Contact: quick mailto form (opens the visitor's mail app, pre-filled) ---------- */
+/* ---------- Contact: EmailJS form (sends direct email, no mail app) ---------- */
+/* Configure: emailjs.init("YOUR_PUBLIC_KEY") and set SERVICE_ID below */
+emailjs.init("YOUR_PUBLIC_KEY");
+
+const SERVICE_ID = "YOUR_SERVICE_ID";
+const CONTACT_TEMPLATE_ID = "template_1hevg0c";   // "Contact Us" template
+const AUTO_REPLY_TEMPLATE_ID = "template_zb9xwa8"; // "Auto-Reply" template
+
 const mailForm = $("#mailForm");
-if (mailForm) mailForm.addEventListener("submit", (e) => {
+if (mailForm) mailForm.addEventListener("submit", async (e) => {
   e.preventDefault();
-  const name = $("#mName").value.trim(), email = $("#mEmail").value.trim(), subject = $("#mSubject").value.trim();
-  const body = `Name: ${name}\nEmail Address: ${email}\n\n(Sent from the portfolio contact form)`;
-  location.href = `mailto:pratikmaharjan323@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  const btn = mailForm.querySelector("button[type=submit]");
+  const originalText = btn.textContent;
+  btn.textContent = "Sending…";
+  btn.disabled = true;
+
+  const templateParams = {
+    from_name: $("#mName").value.trim(),
+    from_email: $("#mEmail").value.trim(),
+    subject: $("#mSubject").value.trim(),
+    message: $("#mMessage").value.trim(),
+    reply_to: $("#mEmail").value.trim(),
+  };
+
+  try {
+    // 1) Send notification to you (pratikmaharjan323@gmail.com)
+    await emailjs.send(SERVICE_ID, CONTACT_TEMPLATE_ID, templateParams);
+
+    // 2) Auto-reply to the visitor
+    await emailjs.send(SERVICE_ID, AUTO_REPLY_TEMPLATE_ID, templateParams);
+
+    btn.textContent = "Sent!";
+    btn.style.background = "var(--accent)";
+    mailForm.reset();
+    setTimeout(() => {
+      btn.textContent = originalText;
+      btn.disabled = false;
+      btn.style.background = "";
+    }, 3000);
+  } catch (err) {
+    console.error(err);
+    btn.textContent = "Failed — try again";
+    btn.disabled = false;
+  }
 });
 
 /* ---------- Chatbot panel (FAQ bot inside; swap window.PipChat.send for an LLM later) ---------- */
@@ -253,7 +290,7 @@ const FAQ = [
   { keys: ["tapai", "bazar", "market", "grocery"],
     answer: "ERP for Tapai Ko Bazar helps the store run its business: stock and inventory, billing, orders and reports in one place, so the team can serve customers without juggling spreadsheets." },
   { keys: ["baltra", "e-commerce", "ecommerce", "shop", "online"],
-    answer: "The Baltra e-commerce app lets the business sell online: product catalog, cart and checkout, order tracking and admin management — shipped to both the App Store and Google Play." },
+    answer: "The Baltra e-commerce app lets the business sell online: product catalog, cart and checkout, order tracking and admin management — shipped to both the App Store and Play Store." },
   { keys: ["erp", "business"],
     answer: "All of Pratik's ERP projects (BYD dealers, seeCar, Tapai Ko Bazar) are apps businesses use to perform their day-to-day business — sales, inventory, billing and reports." },
   { keys: ["experience", "job", "company", "codesc", "intern", "bluefox", "worked"],

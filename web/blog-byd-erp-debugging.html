@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>When the Same Android Device Behaves Differently — Pratik Maharjan</title>
+<meta name="description" content="Debugging a production Flutter ERP app for BYD dealers: a device-specific blank screen that led to investigating GPU rendering, plugin initialization, and SharedPreferences.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>
+  .blog-wrap{max-width:720px;margin:0 auto;padding:88px clamp(20px,5vw,40px) 96px}
+  .blog-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px 20px;margin-bottom:36px}
+  .blog-tag{background:var(--accent);color:var(--accent-ink);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;padding:4px 10px;border-radius:8px}
+  .blog-read{font-size:14px;color:var(--muted);font-weight:600}
+  .blog-date{font-size:14px;color:var(--muted)}
+  .blog-wrap h1{font-size:clamp(1.9rem,4.5vw,3rem);line-height:1.1;letter-spacing:-.03em;font-weight:800;margin:0 0 28px;max-width:none}
+  .blog-wrap h2{font-size:1.25rem;letter-spacing:-.01em;margin:44px 0 12px;color:var(--ink)}
+  .blog-wrap p{color:var(--muted);line-height:1.75;margin:0 0 18px}
+  .blog-wrap ul,.blog-wrap ol{color:var(--muted);line-height:1.75;padding-left:22px;margin:0 0 18px}
+  .blog-wrap li{margin-bottom:6px}
+  .blog-wrap strong{color:var(--ink)}
+  .blog-wrap pre{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px 22px;overflow-x:auto;margin:0 0 22px}
+  .blog-wrap code{font-family:ui-monospace,"Cascadia Code","Fira Code",monospace;font-size:14.5px;color:var(--accent);line-height:1.6}
+  .blog-wrap pre code{color:var(--ink)}
+  .blog-divider{border:0;border-top:1px solid var(--line);margin:48px 0}
+  .blog-note{font-size:14px;color:var(--muted);font-style:italic;margin-top:0}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:15px;color:var(--accent);text-decoration:none;margin-bottom:40px}
+  .back-link:hover{text-decoration:underline}
+  .lesson-block{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:14px;padding:18px 22px;margin:0 0 14px}
+  .lesson-block strong{display:block;margin-bottom:4px;font-size:15.5px}
+  .lesson-block p{margin:0;font-size:15px}
+  .project-badge{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 16px;margin-bottom:36px;font-size:14px;font-weight:700;color:var(--muted)}
+  .project-badge span{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <a class="brand" href="index.html">Pratik Maharjan</a>
+  <nav aria-label="Primary">
+    <a href="index.html#projects">Projects</a>
+    <a href="index.html#experience">Experience</a>
+    <a href="index.html#skills">Skills</a>
+    <a href="index.html#contact">Contact</a>
+    <button id="theme" class="icon" aria-label="Toggle light and dark theme">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </nav>
+</header>
+
+<main>
+  <div class="blog-wrap">
+    <a class="back-link" href="index.html">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Back to portfolio
+    </a>
+
+    <div class="blog-meta">
+      <span class="blog-tag">Flutter</span>
+      <span class="blog-tag">Android</span>
+      <span class="blog-tag">ERP</span>
+      <span class="blog-read">8–10 min read</span>
+    </div>
+
+    <h1>When the Same Android Device Behaves Differently: Debugging a Production Flutter ERP App</h1>
+
+    <div class="project-badge">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      Project: <span>ERP for BYD — used daily by 100+ employees across Nepal</span>
+    </div>
+
+    <p>One of the most interesting problems I encountered while maintaining a production Flutter ERP application wasn't related to business logic, UI rendering, or even the backend.</p>
+    <p>It was a device-specific startup issue.</p>
+    <p>The strange part? Multiple users were running the application on the same phone model with seemingly identical hardware specifications, but only certain users experienced a blank screen during startup.</p>
+    <p>This turned into an investigation involving GPU rendering, Android device configuration, application data, plugin initialization, and eventually SharedPreferences.</p>
+
+    <h2>1. The Problem: Same Device, Different Behaviour</h2>
+    <p>The issue was initially reported by a client who experienced a blank screen when opening the application. Since this was a production ERP application, the issue was particularly important — users depended on it for their daily business operations.</p>
+    <p>I started by collecting device information and asking some basic diagnostic questions:</p>
+    <ul>
+      <li>What exactly happens when you open the application?</li>
+      <li>Does the application remain on a blank screen?</li>
+      <li>Have you tried reinstalling it?</li>
+      <li>Are other users experiencing the same behaviour?</li>
+    </ul>
+    <p>What made things confusing was the device comparison. Some users with the same phone model and hardware specifications were using the application without any problems. However, User D and another user were experiencing startup issues. This made me realize that comparing hardware specifications alone wasn't enough.</p>
+
+    <h2>2. First Hypothesis: Impeller and Mali GPU Drivers</h2>
+    <p>I started researching potential compatibility issues based on the affected devices' specifications. During that investigation, I came across reports of Impeller-related issues involving Mali GPU drivers.</p>
+    <p>Interestingly, I had recently upgraded Flutter to maintain version consistency across the project and discovered that Impeller was being enabled. I decided to force Skia instead of Impeller to investigate whether the rendering engine was responsible.</p>
+    <p>The result was interesting. The application started working on one affected user's device, but User D continued experiencing the same problem.</p>
+    <p>This was a partial resolution, not the root cause. It also taught me an important debugging lesson: <strong>a successful fix for one reproduction case doesn't necessarily explain every occurrence of the same symptom.</strong></p>
+
+    <h2>3. Expanding the Investigation</h2>
+    <p>Instead of randomly changing configurations, I started documenting possible causes. My investigation checklist included:</p>
+    <ul>
+      <li>Android runtime permissions</li>
+      <li>Plugin initialization phases</li>
+      <li>BLoC initialization inside <code>main()</code></li>
+      <li>Splash screen rendering and triggering</li>
+      <li>Operations blocking application startup</li>
+      <li>Device-specific plugin compatibility</li>
+    </ul>
+    <p>I wanted to understand whether the application was actually failing to render or simply never reaching the stage where the UI could be displayed. That distinction became important later.</p>
+
+    <h2>4. Another Client, Another Clue</h2>
+    <p>During the investigation, another client contacted me after updating their device. They reported a similar application startup issue. I suggested reinstalling the application, but that didn't solve it. I then suggested clearing the application's cache and data — this time, the application started working again.</p>
+    <p>This introduced another possibility: <strong>persisted application data could also contribute to startup problems.</strong></p>
+    <p>I subsequently disabled Android application backup using <code>android:allowBackup="false"</code> as a preventive measure against restoring potentially problematic application data. However, User D's issue remained unresolved.</p>
+
+    <h2>5. Investigating Plugin Initialization</h2>
+    <p>I cloned the project to isolate the issue and started looking closely at how plugins were initialized. The existing approach was straightforward:</p>
+    <pre><code>await initializePluginA();
+await initializePluginB();
+await initializePluginC();
+await initializePluginD();</code></pre>
+    <p>This approach works perfectly well when initialization tasks are quick and their execution order is necessary. However, there was a potential architectural problem: every operation depended on the previous operation completing.</p>
+    <p>If one plugin took unusually long to initialize, every subsequent operation had to wait. With multiple plugins involved in application startup, this could become a significant bottleneck — leaving the user staring at a blank screen.</p>
+
+    <h2>6. Rethinking the Initialization Lifecycle</h2>
+    <p>I decided to change how initialization was handled. Rather than making every plugin depend on the completion of another plugin, I isolated independent initialization tasks. The new approach focused on:</p>
+    <ul>
+      <li>Independent asynchronous initialization</li>
+      <li>Individual timeouts for plugins</li>
+      <li>Better failure handling</li>
+      <li>Preventing one plugin failure from blocking unrelated initialization</li>
+      <li>Improving plugin lifecycle compatibility</li>
+    </ul>
+    <p>The objective was to make the application more resilient. A plugin that failed or took too long shouldn't automatically prevent unrelated parts of the application from progressing. Of course, not every initialization operation can run independently — some plugins have genuine dependencies, and those must still be respected. The goal wasn't simply to initialize everything simultaneously. It was to remove <em>unnecessary</em> dependencies.</p>
+
+    <h2>7. Finding the Actual Bottleneck</h2>
+    <p>After isolating the initialization process and investigating individual plugins, I eventually identified the problem.</p>
+    <p><strong>SharedPreferences initialization was taking unusually long on User D's device.</strong></p>
+    <p>It wasn't necessarily throwing an exception or crashing the application. It was taking too long to initialize. Because the startup sequence was waiting for this operation, the application couldn't progress to the next stage. Consequently, the splash screen was never triggered, leaving the user with a blank screen.</p>
+    <p>This was an important discovery. The issue wasn't in the rendering engine or the UI itself — the application was getting blocked much earlier in its startup lifecycle.</p>
+    <p>I investigated the plugin's lifecycle, made the necessary compatibility changes, and released an updated version. Finally, User D confirmed that the application was working.</p>
+
+    <h2>8. What I Learned</h2>
+
+    <div class="lesson-block">
+      <strong>Hardware specifications don't tell the whole story.</strong>
+      <p>Two identical devices can have different runtime behaviour because of their OS configuration, permissions, persisted data, and environment.</p>
+    </div>
+    <div class="lesson-block">
+      <strong>Sequential initialization isn't always the right approach.</strong>
+      <p>When multiple independent plugins are required, unnecessary sequential dependencies can increase startup latency.</p>
+    </div>
+    <div class="lesson-block">
+      <strong>Plugin failures should be isolated.</strong>
+      <p>One plugin should not unnecessarily prevent unrelated application functionality from starting.</p>
+    </div>
+    <div class="lesson-block">
+      <strong>Timeouts are important.</strong>
+      <p>An initialization task should not be allowed to block application progress indefinitely.</p>
+    </div>
+    <div class="lesson-block">
+      <strong>A blank screen doesn't always mean a rendering problem.</strong>
+      <p>Sometimes the application never reaches the stage where rendering can even begin.</p>
+    </div>
+
+    <hr class="blog-divider">
+
+    <h2>Conclusion</h2>
+    <p>What initially appeared to be a device-specific rendering issue eventually led me to investigate the application's startup architecture. The investigation involved multiple hypotheses, partial fixes, additional client reports, and eventually isolating the actual initialization bottleneck.</p>
+    <p>The biggest takeaway for me was simple: <strong>application startup is an engineering problem of its own.</strong></p>
+    <p>It isn't enough for plugins to work individually. Their initialization order, dependencies, failure handling, and interaction with the application lifecycle matter just as much. A production application should be designed to handle slow or failing dependencies without unnecessarily taking the entire user experience down with them.</p>
+    <p>And sometimes, the most difficult bugs aren't caused by what your application does — but by what it is <em>waiting for</em>.</p>
+
+    <hr class="blog-divider">
+    <p class="blog-note">Device identifiers and client-specific information have intentionally been omitted to protect privacy.</p>
+  </div>
+</main>
+
+<footer>
+  <span>© <span id="yr"></span> Pratik Maharjan</span>
+  <span class="foot-note">Crafted in Lalitpur, Nepal · C engine compiled to WebAssembly</span>
+  <span id="clock">…</span>
+</footer>
+
+<script>
+  document.getElementById("yr").textContent = new Date().getFullYear();
+  (function tick(){
+    const n=new Date();
+    document.getElementById("clock").textContent=
+      n.toLocaleTimeString("en-US",{timeZone:"Asia/Kathmandu",hour:"2-digit",minute:"2-digit",second:"2-digit"})+" NPT";
+    setTimeout(tick,1000);
+  })();
+  document.getElementById("theme").addEventListener("click",()=>{
+    const r=document.documentElement;
+    const next=r.dataset.theme==="dark"?"light":"dark";
+    r.dataset.theme=next;
+    try{localStorage.setItem("theme",next)}catch(e){}
+  });
+</script>
+</body>
+</html>
